@@ -20,7 +20,7 @@ TEST_CASE("copy_if_divisible_by() with a p == 1")
 TEST_CASE("copy_if_divisible_by() with p == 3")
 {
     const std::vector<int> vec{99, 0, -47, 1'000'000'008};
-    const std::vector<int> result{99, 1'000'000'008};
+    const std::vector<int> result{99, 0, 1'000'000'008};
     CHECK(copy_if_divisible_by(vec, 3) == result);
 }
 
