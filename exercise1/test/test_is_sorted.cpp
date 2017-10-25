@@ -29,6 +29,12 @@ TEST_CASE("is_sorted() with all equal values")
     CHECK(is_sorted(vec));
 }
 
+TEST_CASE("is_sorted() with mostly sorted values")
+{
+    const std::vector<int> vec{1, 2, 3, 4, 3};
+    CHECK_FALSE(is_sorted(vec));
+}
+
 TEST_CASE("is_sorted() with random vector")
 {
     std::random_device rd{};
