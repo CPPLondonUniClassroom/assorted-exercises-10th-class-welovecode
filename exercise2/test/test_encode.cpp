@@ -21,3 +21,15 @@ TEST_CASE("Encoding with arbitrary shift works as expected")
     const std::string result = "PDEO EO W PAOP OPNEJC :-)";
     CHECK(encode(s, 22) == result);
 }
+
+TEST_CASE("Encoding with large shift works as expected")
+{
+    const std::string s = "THIS IS A TEST_STRING :-)";
+    CHECK(encode(s, 104) == s);
+}
+
+TEST_CASE("Encoding with large negative shift works as expected")
+{
+    const std::string s = "THIS IS A TEST_STRING :-)";
+    CHECK(encode(s, -104) == s);
+}
