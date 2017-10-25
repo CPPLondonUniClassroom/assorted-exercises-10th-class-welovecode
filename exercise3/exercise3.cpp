@@ -1,6 +1,8 @@
 
 #include "exercise3.hpp"
 
+#include <sstream>
+
 // Requirements:
 //   -- Given a string containing elements separated by commas, return a
 //      vector of strings containing each element
@@ -8,7 +10,14 @@
 //    split("a,b,c") -> vector<string>("a", "b", "c");
 std::vector<std::string> split(const std::string& str)
 {
-    return {};
+    std::istringstream ss{str};
+    std::vector<std::string> output;
+    std::string s;
+    while (std::getline(ss, s, ',')) {
+        output.push_back(s);
+    }
+
+    return output;
 }
 
 // An element which is enclosed in double quotes should be treated as a single element,
