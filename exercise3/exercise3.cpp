@@ -30,7 +30,50 @@ std::vector<std::string> split(const std::string& str)
 //      elements as a single unit
 std::vector<std::string> quoted_split(const std::string& str)
 {
-    return {};
+    std::vector<std::string> output;
+    auto pos = str.begin();
+
+    while (pos != str.end()) {
+        // We're at the start of an element. Is this a quote?
+        if (*pos == '"') {
+            // First, bump the position so we ignore the opening quote
+            ++pos;
+            // Now find the closing quote by searching forward from our current
+            // position
+            const auto end_quote = std::find(pos, str.end(), '"');
+            // The interval [pos, end_quote) is a single element, so copy it
+            // to the output
+            output.emplace_back(pos, end_quote);
+
+            // If our "end_quote" is actually the end of the string, then
+            // we're done...
+            if (end_quote == str.end()) {
+                break;
+            }
+            // ... otherwise advance to the position after the closing quote
+            pos = std::next(end_quote);
+        } else {
+            // In this branch we need to find the next comma
+            const auto comma = std::find(pos, str.end(), ',');
+
+            // The interval [pos, comma) contains a single element, so copy it
+            // to the output
+            output.emplace_back(pos, comma);
+
+            // Position our cursor at the element end position
+            pos = comma;
+        }
+
+        // We should either be at a comma, or the end of the string. If
+        // we're at the end we break, otherwise we bump the iterator and
+        // continue
+        if (pos == str.end()) {
+            break;
+        }
+        ++pos;
+    }
+
+    return output;
 }
 
 // A CSV file consists of multiple lines, each of which should be split
@@ -38,5 +81,12 @@ std::vector<std::string> quoted_split(const std::string& str)
 // a `csv_file` containing each line of the input, split correctly
 csv_file parse_csv(std::istream& istream)
 {
-    return {};
+    std::string line;
+    csv_file file{};
+
+    while (std::getline(istream, line)) {
+        file.lines.push_back(quoted_split(line));
+    }
+
+    return file;
 }
