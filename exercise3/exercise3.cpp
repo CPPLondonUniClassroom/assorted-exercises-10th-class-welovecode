@@ -10,11 +10,16 @@
 //    split("a,b,c") -> vector<string>("a", "b", "c");
 std::vector<std::string> split(const std::string& str)
 {
-    std::istringstream ss{str};
     std::vector<std::string> output;
-    std::string s;
-    while (std::getline(ss, s, ',')) {
-        output.push_back(s);
+    auto pos = str.begin();
+
+    while (pos != str.end()) {
+        const auto comma = std::find(pos, str.end(), ',');
+        output.emplace_back(pos, comma);
+        if (comma == str.end()) {
+            break;
+        }
+        pos = std::next(comma);
     }
 
     return output;
